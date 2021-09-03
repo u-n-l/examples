@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+#map {
+  width: 100vw;
+  height: 100vh;
+}
+.title {
+  font-size: 20px;
+  font-weight: 500;
+}
+.action-sheet {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  left: 20px;
+  top: 20px;
+  width: 380px;
+  height: 600px;
+}
+.action-sheet-content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.action-sheet-button {
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.level-selector {
+  position: fixed;
+  z-index: 1;
+  top: 20px;
+  right: 20px;
+}
+.label {
+  font-size: 16px;
+  font-weight: 500;
+}
+.fab {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.selected-fab {
+  background-color: gray;
+}
