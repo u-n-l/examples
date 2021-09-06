@@ -9,6 +9,7 @@ import {
 } from "./utils/renderRouteDestinationMarker";
 import { renderRouteSourceMarker } from "./utils/renderRouteSourceMarker";
 import { renderGridLines } from "./utils/renderGridLines";
+import { renderRoute } from "./utils/renderRoute";
 import UnlCore from "unl-core";
 import { previewRoute } from "./tutorials/previewRoute";
 
@@ -31,7 +32,9 @@ const app = () => {
   map.on("style.load", () => {
     renderGridLines(map);
     renderRouteDestinationMarker(map);
-    // renderRouteSourceMarker(map);
+    renderRouteSourceMarker(map);
+    renderRoute(map);
+    map.setLayoutProperty("routeSourceMarker", "visibility", "none");
   });
 
   map.on("move", () => {

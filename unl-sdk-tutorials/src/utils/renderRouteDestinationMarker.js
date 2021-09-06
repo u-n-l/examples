@@ -14,7 +14,7 @@ export const renderRouteDestinationMarker = (map) => {
     type: "symbol",
     source: "routeDestinationMarker",
     layout: {
-      "icon-image": "venue_marker_icon",
+      "icon-image": "route_destination_icon",
       "icon-size": 0.5,
       "icon-offset": [0, -40],
       "text-font": ["Fira GO Regular"],
@@ -26,11 +26,14 @@ export const renderRouteDestinationMarker = (map) => {
 export const updateDestinationMarkerPosition = (map, event) => {
   var coordinates = event.lngLat;
 
+  const features = map.queryRenderedFeatures(event.point);
+
   map.getSource("routeDestinationMarker").setData({
     type: "Feature",
     geometry: {
       type: "Point",
       coordinates: [coordinates.lng, coordinates.lat],
     },
+    properties: features[0] ? features[0].properties : {},
   });
 };
