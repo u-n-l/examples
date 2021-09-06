@@ -5,9 +5,12 @@ const ActionSheet = () => {
       <button id="import-venue-button" class="action-sheet-button">Import IMDF venue from Studio</button>
       <button id="upload-venue-button" class="action-sheet-button">Upload IMDF venue</button>
       <button id="import-poi-button" class="action-sheet-button">Import POI from Studio</button>
-      <button id="upload-poi-button" class="action-sheet-button">Upload POI</button>
-      <input id="name-input" class="action-sheet-button"></input>
-      <input id="submit" type="submit" value="Submit">
+      <button id="create-poi-button" class="action-sheet-button">Create new POI</button>
+      <form>
+        <input id="poi-name-input" class="input" value="POI name" placeholder="POI name"></input>
+        <input id="submit" type="submit" class="input" value="Create POI">
+      </form>
+      <button id="preview-route-button" class="action-sheet-button">Preview route</button>
     </div>
   `;
 

@@ -3,17 +3,23 @@ import ActionSheet from "./components/ActionSheet";
 import { importVenueFromStudio } from "./tutorials/importVenueFromStudio";
 import { uploadImdfVenue } from "./tutorials/uploadImdfVenue";
 import { loadMapImages } from "./utils/loadMapImages";
+import {
+  renderRouteDestinationMarker,
+  updateDestinationMarkerPosition,
+} from "./utils/renderRouteDestinationMarker";
+import { renderRouteSourceMarker } from "./utils/renderRouteSourceMarker";
 import { renderGridLines } from "./utils/renderGridLines";
 import UnlCore from "unl-core";
 import { importPoiFromStudio } from "./tutorials/importPoiFromStudio";
-import { uploadPoi } from "./tutorials/uploadPoi";
+import { createNewPoi } from "./tutorials/createNewPoi";
+import { previewRoute } from "./tutorials/previewRoute";
+import { showInputField, showSubmitButton } from "./utils/renderPoi";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
 const app = () => {
-  const MAPBOX_TOKEN =
-    "pk.eyJ1IjoiYm9nZGFuc2ltb24iLCJhIjoiY2t0MDMwdHdzMXdubjJwcHU4eWV2dXFiZSJ9.GD3chB-SiUiy7yIVEZ03zQ"; // https://docs.mapbox.com/help/glossary/access-token/
-  const HERE_MAPS_API_KEY = "mDI8QJCMDYlXmWmcU25JAXwb6haFx5ZMYOf21DVXlxk"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
+  const MAPBOX_TOKEN = "YOUR_MAPBOX_TOKEN"; // https://docs.mapbox.com/help/glossary/access-token/
+  const HERE_MAPS_API_KEY = "YOUR_HERE_MAPS_API_KEY"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
 
   mapboxgl.accessToken = MAPBOX_TOKEN;
   const map = new mapboxgl.Map({
@@ -27,6 +33,8 @@ const app = () => {
 
   map.on("style.load", () => {
     renderGridLines(map);
+    renderRouteDestinationMarker(map);
+    renderRouteSourceMarker(map);
   });
 
   map.on("move", () => {
@@ -57,6 +65,10 @@ const app = () => {
     }
   });
 
+  map.on("click", (event) => {
+    updateDestinationMarkerPosition(map, event);
+  });
+
   document.getElementById("action-sheet").innerHTML = ActionSheet();
 
   document
@@ -73,29 +85,21 @@ const app = () => {
     importPoiFromStudio(map);
   });
 
-  document.getElementById("upload-poi-button").addEventListener("click", () => {
-    //uploadPoi(map);
-    var x = document.getElementById("name-input");
-
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-    }
-
-    var y = document.getElementById("submit");
-
-    if (y.style.display === "none") {
-      y.style.display = "block";
-    } else {
-      y.style.display = "none";
-    }
+  document.getElementById("create-poi-button").addEventListener("click", () => {
+    showInputField();
+    showSubmitButton();
   });
 
   document.getElementById("submit").addEventListener("click", (event) => {
     event.preventDefault();
-    console.log(document.getElementById("name-input").value);
+    createNewPoi(map);
   });
+
+  document
+    .getElementById("preview-route-button")
+    .addEventListener("click", () => {
+      previewRoute(map);
+    });
 };
 
 app();

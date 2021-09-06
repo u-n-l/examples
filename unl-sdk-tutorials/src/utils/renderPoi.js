@@ -45,3 +45,23 @@ const addPoiMarker = (map, poiCoordinates, poiName, poiId) => {
     },
   });
 };
+
+export const showInputField = () => {
+  var inputField = document.getElementById("poi-name-input");
+
+  if (inputField.style.display !== "block") {
+    inputField.style.display = "block";
+  } else {
+    inputField.style.display = "none";
+  }
+};
+
+export const showSubmitButton = () => {
+  var createButton = document.getElementById("submit");
+
+  if (createButton.style.display !== "block") {
+    createButton.style.display = "block";
+  } else {
+    createButton.style.display = "none";
+  }
+};
