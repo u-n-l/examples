@@ -14,7 +14,7 @@ export const renderRouteSourceMarker = (map) => {
     type: "symbol",
     source: "routeSourceMarker",
     layout: {
-      "icon-image": "venue_marker_icon",
+      "icon-image": "marker_icon",
       "icon-size": 0.5,
       "icon-offset": [0, -40],
       "text-font": ["Fira GO Regular"],

@@ -1,9 +1,9 @@
-import VenueMarkerIcon from "../icons/venue_marker_icon.png";
+import VenueMarkerIcon from "../icons/marker_icon.png";
 import VenueUnitIcon from "../icons/venue_unit_icon.png";
 
 const MAP_IMAGES = [
   {
-    name: "venue_marker_icon",
+    name: "marker_icon",
     icon: VenueMarkerIcon,
   },
   {

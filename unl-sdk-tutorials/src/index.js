@@ -10,13 +10,16 @@ import {
 import { renderRouteSourceMarker } from "./utils/renderRouteSourceMarker";
 import { renderGridLines } from "./utils/renderGridLines";
 import UnlCore from "unl-core";
+import { importPoiFromStudio } from "./tutorials/importPoiFromStudio";
+import { createNewPoi } from "./tutorials/createNewPoi";
 import { previewRoute } from "./tutorials/previewRoute";
+import { showInputField, showSubmitButton } from "./utils/renderPoi";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
 const app = () => {
-  const MAPBOX_TOKEN = "YOUR-MAPBOX-TOKEN"; // https://docs.mapbox.com/help/glossary/access-token/
-  const HERE_MAPS_API_KEY = "YOUR-HERE-MAPS-API-KEY"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
+  const MAPBOX_TOKEN = "YOUR_MAPBOX_TOKEN"; // https://docs.mapbox.com/help/glossary/access-token/
+  const HERE_MAPS_API_KEY = "YOUR_HERE_MAPS_API_KEY"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
 
   mapboxgl.accessToken = MAPBOX_TOKEN;
   const map = new mapboxgl.Map({
@@ -31,7 +34,7 @@ const app = () => {
   map.on("style.load", () => {
     renderGridLines(map);
     renderRouteDestinationMarker(map);
-    // renderRouteSourceMarker(map);
+    renderRouteSourceMarker(map);
   });
 
   map.on("move", () => {
@@ -67,6 +70,7 @@ const app = () => {
   });
 
   document.getElementById("action-sheet").innerHTML = ActionSheet();
+
   document
     .getElementById("import-venue-button")
     .addEventListener("click", () => {
@@ -77,6 +81,20 @@ const app = () => {
     .addEventListener("click", () => {
       uploadImdfVenue(map);
     });
+  document.getElementById("import-poi-button").addEventListener("click", () => {
+    importPoiFromStudio(map);
+  });
+
+  document.getElementById("create-poi-button").addEventListener("click", () => {
+    showInputField();
+    showSubmitButton();
+  });
+
+  document.getElementById("submit").addEventListener("click", (event) => {
+    event.preventDefault();
+    createNewPoi(map);
+  });
+
   document
     .getElementById("preview-route-button")
     .addEventListener("click", () => {

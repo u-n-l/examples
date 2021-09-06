@@ -57,3 +57,8 @@ body {
 .selected-fab {
   background-color: gray;
 }
+.input {
+  display: none;
+  padding: 12px;
+  margin-bottom: 12px;
+}
