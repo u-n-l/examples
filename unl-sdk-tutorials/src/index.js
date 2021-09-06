@@ -3,8 +3,14 @@ import ActionSheet from "./components/ActionSheet";
 import { importVenueFromStudio } from "./tutorials/importVenueFromStudio";
 import { uploadImdfVenue } from "./tutorials/uploadImdfVenue";
 import { loadMapImages } from "./utils/loadMapImages";
+import {
+  renderRouteDestinationMarker,
+  updateDestinationMarkerPosition,
+} from "./utils/renderRouteDestinationMarker";
+import { renderRouteSourceMarker } from "./utils/renderRouteSourceMarker";
 import { renderGridLines } from "./utils/renderGridLines";
 import UnlCore from "unl-core";
+import { previewRoute } from "./tutorials/previewRoute";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
@@ -24,6 +30,8 @@ const app = () => {
 
   map.on("style.load", () => {
     renderGridLines(map);
+    renderRouteDestinationMarker(map);
+    // renderRouteSourceMarker(map);
   });
 
   map.on("move", () => {
@@ -54,6 +62,10 @@ const app = () => {
     }
   });
 
+  map.on("click", (event) => {
+    updateDestinationMarkerPosition(map, event);
+  });
+
   document.getElementById("action-sheet").innerHTML = ActionSheet();
   document
     .getElementById("import-venue-button")
@@ -64,6 +76,11 @@ const app = () => {
     .getElementById("upload-venue-button")
     .addEventListener("click", () => {
       uploadImdfVenue(map);
+    });
+  document
+    .getElementById("preview-route-button")
+    .addEventListener("click", () => {
+      previewRoute(map);
     });
 };
 
