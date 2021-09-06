@@ -5,12 +5,15 @@ import { uploadImdfVenue } from "./tutorials/uploadImdfVenue";
 import { loadMapImages } from "./utils/loadMapImages";
 import { renderGridLines } from "./utils/renderGridLines";
 import UnlCore from "unl-core";
+import { importPoiFromStudio } from "./tutorials/importPoiFromStudio";
+import { uploadPoi } from "./tutorials/uploadPoi";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
 const app = () => {
-  const MAPBOX_TOKEN = "YOUR-MAPBOX-TOKEN"; // https://docs.mapbox.com/help/glossary/access-token/
-  const HERE_MAPS_API_KEY = "YOUR-HERE-MAPS-API-KEY"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
+  const MAPBOX_TOKEN =
+    "pk.eyJ1IjoiYm9nZGFuc2ltb24iLCJhIjoiY2t0MDMwdHdzMXdubjJwcHU4eWV2dXFiZSJ9.GD3chB-SiUiy7yIVEZ03zQ"; // https://docs.mapbox.com/help/glossary/access-token/
+  const HERE_MAPS_API_KEY = "mDI8QJCMDYlXmWmcU25JAXwb6haFx5ZMYOf21DVXlxk"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
 
   mapboxgl.accessToken = MAPBOX_TOKEN;
   const map = new mapboxgl.Map({
@@ -55,6 +58,7 @@ const app = () => {
   });
 
   document.getElementById("action-sheet").innerHTML = ActionSheet();
+
   document
     .getElementById("import-venue-button")
     .addEventListener("click", () => {
@@ -65,6 +69,33 @@ const app = () => {
     .addEventListener("click", () => {
       uploadImdfVenue(map);
     });
+  document.getElementById("import-poi-button").addEventListener("click", () => {
+    importPoiFromStudio(map);
+  });
+
+  document.getElementById("upload-poi-button").addEventListener("click", () => {
+    //uploadPoi(map);
+    var x = document.getElementById("name-input");
+
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+
+    var y = document.getElementById("submit");
+
+    if (y.style.display === "none") {
+      y.style.display = "block";
+    } else {
+      y.style.display = "none";
+    }
+  });
+
+  document.getElementById("submit").addEventListener("click", (event) => {
+    event.preventDefault();
+    console.log(document.getElementById("name-input").value);
+  });
 };
 
 app();
