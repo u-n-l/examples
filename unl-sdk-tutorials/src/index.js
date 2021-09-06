@@ -3,6 +3,14 @@ import ActionSheet from "./components/ActionSheet";
 import { importVenueFromStudio } from "./tutorials/importVenueFromStudio";
 import { uploadImdfVenue } from "./tutorials/uploadImdfVenue";
 import { loadMapImages } from "./utils/loadMapImages";
+import {
+  renderRouteDestinationMarker,
+  updateDestinationMarkerPosition,
+} from "./utils/renderRouteDestinationMarker";
+import { renderRouteSourceMarker } from "./utils/renderRouteSourceMarker";
+import { renderGridLines } from "./utils/renderGridLines";
+import UnlCore from "unl-core";
+import { previewRoute } from "./tutorials/previewRoute";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
@@ -15,9 +23,48 @@ const app = () => {
     container: "map",
     style: `https://assets.vector.hereapi.com/styles/berlin/base/mapbox/tilezen?apikey=${HERE_MAPS_API_KEY}`,
     minZoom: 2,
+    maxZoom: 20,
   });
 
   loadMapImages(map);
+
+  map.on("style.load", () => {
+    renderGridLines(map);
+    renderRouteDestinationMarker(map);
+    // renderRouteSourceMarker(map);
+  });
+
+  map.on("move", () => {
+    const bounds = map.getBounds();
+    const zoom = map.getZoom();
+
+    const unlBounds = {
+      n: bounds._ne.lat,
+      e: bounds._ne.lng,
+      s: bounds._sw.lat,
+      w: bounds._sw.lng,
+    };
+
+    if (zoom > 18) {
+      const gridLines = UnlCore.gridLines(unlBounds);
+
+      map.getSource("gridLines").setData({
+        type: "FeatureCollection",
+        features: gridLines.map((line) => ({
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates: line,
+          },
+        })),
+      });
+    }
+  });
+
+  map.on("click", (event) => {
+    updateDestinationMarkerPosition(map, event);
+  });
 
   document.getElementById("action-sheet").innerHTML = ActionSheet();
   document
@@ -29,6 +76,11 @@ const app = () => {
     .getElementById("upload-venue-button")
     .addEventListener("click", () => {
       uploadImdfVenue(map);
+    });
+  document
+    .getElementById("preview-route-button")
+    .addEventListener("click", () => {
+      previewRoute(map);
     });
 };
 
