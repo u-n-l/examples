@@ -110,7 +110,7 @@ const addVenueMarker = (map, venueCoordinates, venueName, venueId) => {
       type: "symbol",
       source: `venueFeature_${venueId}`,
       layout: {
-        "icon-image": "venue_marker_icon",
+        "icon-image": "default_marker_icon",
         "icon-size": 0.5,
         "icon-offset": [0, -40],
         "text-font": ["Fira GO Regular"],
