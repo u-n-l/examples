@@ -1,3 +1,5 @@
+const ROUTE_STARTING_POINT = [13.38010311126709, 52.5201416015625];
+
 export const renderRouteSourceMarker = (map) => {
   map.addSource("routeSourceMarker", {
     type: "geojson",
@@ -5,7 +7,7 @@ export const renderRouteSourceMarker = (map) => {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [13.38010311126709, 52.5201416015625],
+        coordinates: ROUTE_STARTING_POINT,
       },
     },
   });

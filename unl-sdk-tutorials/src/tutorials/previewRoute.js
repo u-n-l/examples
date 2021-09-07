@@ -10,8 +10,7 @@ const buildDestinationWaypoint = (destinationMapSource) => {
     // indoor waypoint
     const indoorWaypoint = {
       type: "indoor",
-      // venueId: destinationSourceProperties.venueId,
-      venueId: "1e6d8d33-36de-4a9a-9c4a-6d1bf1ba95d7",
+      venueId: destinationSourceProperties.venueId,
       unitId: destinationSourceProperties.id,
       levelId: destinationSourceProperties.level_id,
       geohash: UnlCore.encode(
@@ -64,7 +63,6 @@ export const previewRoute = async (map) => {
         routeRequest.waypoints[1].type === "indoor"
           ? splittedCoords[1]
           : splittedCoords[0];
-      debugger;
 
       return [Number(lng), Number(lat)];
     });

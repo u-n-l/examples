@@ -30,7 +30,7 @@ export const renderVenue = (map, imdfFeatures) => {
     openingFeatureCollection,
   } = getVenueRenderedFeatures(imdfFeatures);
 
-  const venueId = venueFeatureCollection.id;
+  const venueId = venueFeatureCollection.venueId;
   const venueCoordinates =
     venueFeatureCollection.geojson.features[0].properties.display_point
       .coordinates;
@@ -39,14 +39,11 @@ export const renderVenue = (map, imdfFeatures) => {
   );
   const groundLevelId =
     levelFeatureCollection.geojson.features[venueGroundLevel].id;
-  const venueName = Object.values(
-    venueFeatureCollection.geojson.features[0].properties.name
-  )[0];
 
-  addVenueMarker(map, venueCoordinates, venueName, venueId);
-  addLevel(map, levelFeatureCollection.geojson, venueId);
-  addUnit(map, unitFeatureCollection.geojson, venueId);
-  addOpening(map, openingFeatureCollection.geojson, venueId);
+  addVenueMarker(map, venueFeatureCollection);
+  addLevel(map, levelFeatureCollection);
+  addUnit(map, unitFeatureCollection);
+  addOpening(map, openingFeatureCollection);
   if (!document.getElementById("level-selector-container")) {
     displayLevelSelector(
       map,
@@ -84,7 +81,15 @@ const displayLevelSelector = (
   );
 };
 
-const addVenueMarker = (map, venueCoordinates, venueName, venueId) => {
+const addVenueMarker = (map, venueFeatureCollection) => {
+  const venueId = venueFeatureCollection.venueId;
+  const venueCoordinates =
+    venueFeatureCollection.geojson.features[0].properties.display_point
+      .coordinates;
+  const venueName = Object.values(
+    venueFeatureCollection.geojson.features[0].properties.name
+  )[0];
+
   if (map.getSource(`venueFeature_${venueId}`)) {
     return;
   }
@@ -126,7 +131,9 @@ const addVenueMarker = (map, venueCoordinates, venueName, venueId) => {
   );
 };
 
-const addLevel = (map, levelFeatureCollection, venueId) => {
+const addLevel = (map, levelFeatureCollection) => {
+  const venueId = levelFeatureCollection.venueId;
+
   if (map.getSource(`levelFeature_${venueId}`)) {
     return;
   }
@@ -134,8 +141,8 @@ const addLevel = (map, levelFeatureCollection, venueId) => {
   map.addSource(`levelFeature_${venueId}`, {
     type: "geojson",
     data: {
-      ...levelFeatureCollection,
-      features: levelFeatureCollection.features.map((feature) => {
+      ...levelFeatureCollection.geojson,
+      features: levelFeatureCollection.geojson.features.map((feature) => {
         return {
           ...feature,
           properties: {
@@ -173,7 +180,9 @@ const addLevel = (map, levelFeatureCollection, venueId) => {
   );
 };
 
-const addUnit = (map, unitFeatureCollection, venueId) => {
+const addUnit = (map, unitFeatureCollection) => {
+  const venueId = unitFeatureCollection.venueId;
+
   if (map.getSource(`unitFeature_${venueId}`)) {
     return;
   }
@@ -181,8 +190,8 @@ const addUnit = (map, unitFeatureCollection, venueId) => {
   map.addSource(`unitFeature_${venueId}`, {
     type: "geojson",
     data: {
-      ...unitFeatureCollection,
-      features: unitFeatureCollection.features.map((feature) => {
+      ...unitFeatureCollection.geojson,
+      features: unitFeatureCollection.geojson.features.map((feature) => {
         return {
           ...feature,
           properties: {
@@ -240,14 +249,16 @@ const addUnit = (map, unitFeatureCollection, venueId) => {
   );
 };
 
-const addOpening = (map, openingFeatureCollection, venueId) => {
+const addOpening = (map, openingFeatureCollection) => {
+  const venueId = openingFeatureCollection.venueId;
+
   if (map.getSource(`openingFeature_${venueId}`)) {
     return;
   }
 
   map.addSource(`openingFeature_${venueId}`, {
     type: "geojson",
-    data: openingFeatureCollection,
+    data: openingFeatureCollection.geojson,
   });
 
   map.addLayer(
