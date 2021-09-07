@@ -1,6 +1,6 @@
 import UnlApi from "unl-js-api/dist";
 
-const UNL_API_KEY = "YOUR_UNL_API_KEY"; //https://developer.unl.global/docs/unlSdk/projects-apiKeys
+const UNL_API_KEY = "a50kBURDDWeBGTb4ZZaWMWlIwMPcKevd"; //https://developer.unl.global/docs/unlSdk/projects-apiKeys
 const unlApi = new UnlApi({ apiKey: UNL_API_KEY });
 
 export const uploadImdfArchive = (projectId, imdfArchive) => {
@@ -25,4 +25,8 @@ export const createPoi = (projectId, poiGeojson) => {
 
 export const fetchRoute = (projectId, routeRequest) => {
   return unlApi.routingApi.route(projectId, routeRequest);
+};
+
+export const fetchSearchResults = (projectId, searchParams) => {
+  return unlApi.searchApi.search(projectId, searchParams);
 };

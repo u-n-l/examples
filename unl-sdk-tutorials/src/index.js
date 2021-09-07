@@ -3,17 +3,22 @@ import ActionSheet from "./components/ActionSheet";
 import { importVenueFromStudio } from "./tutorials/importVenueFromStudio";
 import { uploadImdfVenue } from "./tutorials/uploadImdfVenue";
 import { loadMapImages } from "./utils/loadMapImages";
-import {
-  renderRouteDestinationMarker,
-  updateDestinationMarkerPosition,
-} from "./utils/renderRouteDestinationMarker";
 import { renderRouteSourceMarker } from "./utils/renderRouteSourceMarker";
-import { renderGridLines } from "./utils/renderGridLines";
-import UnlCore from "unl-core";
+import { renderGridLines, updateGridLines } from "./utils/renderGridLines";
 import { importPoiFromStudio } from "./tutorials/importPoiFromStudio";
 import { createNewPoi } from "./tutorials/createNewPoi";
 import { previewRoute } from "./tutorials/previewRoute";
-import { showInputField, showSubmitButton } from "./utils/renderPoi";
+import {
+  showInputField,
+  showSubmitButton,
+  toggleSearchContent,
+} from "./utils/renderPoi";
+import { searchPoi } from "./tutorials/searchPoi";
+import {
+  renderCell,
+  updateCell,
+  resetSelectedLocation,
+} from "./utils/renderCell";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
@@ -33,40 +38,16 @@ const app = () => {
 
   map.on("style.load", () => {
     renderGridLines(map);
-    renderRouteDestinationMarker(map);
-    renderRouteSourceMarker(map);
+    renderCell(map);
+    //renderRouteSourceMarker(map);
   });
 
   map.on("move", () => {
-    const bounds = map.getBounds();
-    const zoom = map.getZoom();
-
-    const unlBounds = {
-      n: bounds._ne.lat,
-      e: bounds._ne.lng,
-      s: bounds._sw.lat,
-      w: bounds._sw.lng,
-    };
-
-    if (zoom > 18) {
-      const gridLines = UnlCore.gridLines(unlBounds);
-
-      map.getSource("gridLines").setData({
-        type: "FeatureCollection",
-        features: gridLines.map((line) => ({
-          type: "Feature",
-          properties: {},
-          geometry: {
-            type: "LineString",
-            coordinates: line,
-          },
-        })),
-      });
-    }
+    updateGridLines(map);
   });
 
   map.on("click", (event) => {
-    updateDestinationMarkerPosition(map, event);
+    updateCell(map, event.lngLat);
   });
 
   document.getElementById("action-sheet").innerHTML = ActionSheet();
@@ -93,6 +74,7 @@ const app = () => {
   document.getElementById("submit").addEventListener("click", (event) => {
     event.preventDefault();
     createNewPoi(map);
+    resetSelectedLocation(map);
   });
 
   document
@@ -100,6 +82,15 @@ const app = () => {
     .addEventListener("click", () => {
       previewRoute(map);
     });
+
+  document.getElementById("search-poi-button").addEventListener("click", () => {
+    toggleSearchContent();
+  });
+
+  document.getElementById("search").addEventListener("click", (event) => {
+    event.preventDefault();
+    searchPoi(map);
+  });
 };
 
 app();

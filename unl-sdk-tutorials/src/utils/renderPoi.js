@@ -1,14 +1,19 @@
+import { updateCell } from "./renderCell";
+import { geohashToUnlCoordinates } from "./unlCoreHelpers";
+
 export const renderPoi = (map, poi) => {
   const poiId = poi.recordId;
   const poiCoordinates = poi.geojson.geometry.coordinates;
   const poiName = poi.geojson.properties.name;
+  const poiGeohash = poi.geohash;
 
-  addPoiMarker(map, poiCoordinates, poiName, poiId);
+  addPoiMarker(map, poiGeohash, poiName, poiId);
+  updateCell(map, { lat: poiCoordinates[1], lng: poiCoordinates[0] });
 
   map.flyTo({ center: poiCoordinates, zoom: 18 });
 };
 
-const addPoiMarker = (map, poiCoordinates, poiName, poiId) => {
+const addPoiMarker = (map, poiGeohash, poiName, poiId) => {
   if (map.getSource(`poi_${poiId}`)) {
     return;
   }
@@ -19,7 +24,7 @@ const addPoiMarker = (map, poiCoordinates, poiName, poiId) => {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: poiCoordinates,
+        coordinates: geohashToUnlCoordinates(poiGeohash),
       },
       properties: {
         name: poiName,
@@ -32,7 +37,7 @@ const addPoiMarker = (map, poiCoordinates, poiName, poiId) => {
     type: "symbol",
     source: `poi_${poiId}`,
     layout: {
-      "icon-image": "marker_icon",
+      "icon-image": "marker_icon_satellite",
       "icon-size": 0.5,
       "icon-offset": [0, -40],
       "text-font": ["Fira GO Regular"],
@@ -63,5 +68,15 @@ export const showSubmitButton = () => {
     createButton.style.display = "block";
   } else {
     createButton.style.display = "none";
+  }
+};
+
+export const toggleSearchContent = () => {
+  var searchContent = document.getElementById("search-content");
+
+  if (searchContent.style.display !== "block") {
+    searchContent.style.display = "block";
+  } else {
+    searchContent.style.display = "none";
   }
 };
