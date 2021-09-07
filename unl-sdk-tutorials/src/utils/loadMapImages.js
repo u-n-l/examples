@@ -1,12 +1,12 @@
-import VenueMarkerIcon from "../icons/venue_marker_icon.png";
+import DefaultMarkerIcon from "../icons/default_marker_icon.png";
 import VenueUnitIcon from "../icons/venue_unit_icon.png";
 import RouteSourceIcon from "../icons/route_source_icon.png";
 import RouteDestinationIcon from "../icons/route_destination_icon.png";
 
 const MAP_IMAGES = [
   {
-    name: "venue_marker_icon",
-    icon: VenueMarkerIcon,
+    name: "default_marker_icon",
+    icon: DefaultMarkerIcon,
   },
   {
     name: "venue_unit_icon",

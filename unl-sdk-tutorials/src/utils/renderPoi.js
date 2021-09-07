@@ -32,7 +32,7 @@ const addPoiMarker = (map, poiCoordinates, poiName, poiId) => {
     type: "symbol",
     source: `poi_${poiId}`,
     layout: {
-      "icon-image": "marker_icon",
+      "icon-image": "default_marker_icon",
       "icon-size": 0.5,
       "icon-offset": [0, -40],
       "text-font": ["Fira GO Regular"],
