@@ -19,12 +19,13 @@ import {
   updateCell,
   resetSelectedLocation,
 } from "./utils/renderCell";
+import { renderRoute } from "./utils/renderRoute";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
 const app = () => {
-  const MAPBOX_TOKEN = "YOUR_MAPBOX_TOKEN"; // https://docs.mapbox.com/help/glossary/access-token/
-  const HERE_MAPS_API_KEY = "YOUR_HERE_MAPS_API_KEY"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
+  const MAPBOX_TOKEN = "YOUR-MAPBOX-TOKEN"; // https://docs.mapbox.com/help/glossary/access-token/
+  const HERE_MAPS_API_KEY = "YOUR-HERE-MAPS-API-KEY"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
 
   mapboxgl.accessToken = MAPBOX_TOKEN;
   const map = new mapboxgl.Map({
@@ -40,6 +41,10 @@ const app = () => {
     renderGridLines(map);
     renderCell(map);
     //renderRouteSourceMarker(map);
+    renderRouteDestinationMarker(map);
+    renderRouteSourceMarker(map);
+    renderRoute(map);
+    map.setLayoutProperty("routeSourceMarker", "visibility", "none");
   });
 
   map.on("move", () => {
@@ -51,7 +56,6 @@ const app = () => {
   });
 
   document.getElementById("action-sheet").innerHTML = ActionSheet();
-
   document
     .getElementById("import-venue-button")
     .addEventListener("click", () => {
@@ -76,7 +80,6 @@ const app = () => {
     createNewPoi(map);
     resetSelectedLocation(map);
   });
-
   document
     .getElementById("preview-route-button")
     .addEventListener("click", () => {

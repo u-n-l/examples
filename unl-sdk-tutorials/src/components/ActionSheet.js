@@ -4,6 +4,7 @@ const ActionSheet = () => {
     <div id="action-sheet-content" class="action-sheet-content">
       <button id="import-venue-button" class="action-sheet-button">Import IMDF venue from Studio</button>
       <button id="upload-venue-button" class="action-sheet-button">Upload IMDF venue</button>
+      <button id="preview-route-button" class="action-sheet-button">Preview route</button>
       <button id="import-poi-button" class="action-sheet-button">Import POI from Studio</button>
       <button id="create-poi-button" class="action-sheet-button">Create new POI</button>
       <form>

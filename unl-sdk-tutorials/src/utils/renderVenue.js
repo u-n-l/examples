@@ -30,7 +30,7 @@ export const renderVenue = (map, imdfFeatures) => {
     openingFeatureCollection,
   } = getVenueRenderedFeatures(imdfFeatures);
 
-  const venueId = venueFeatureCollection.id;
+  const venueId = venueFeatureCollection.venueId;
   const venueCoordinates =
     venueFeatureCollection.geojson.features[0].properties.display_point
       .coordinates;
@@ -39,14 +39,11 @@ export const renderVenue = (map, imdfFeatures) => {
   );
   const groundLevelId =
     levelFeatureCollection.geojson.features[venueGroundLevel].id;
-  const venueName = Object.values(
-    venueFeatureCollection.geojson.features[0].properties.name
-  )[0];
 
-  addVenueMarker(map, venueCoordinates, venueName, venueId);
-  addLevel(map, levelFeatureCollection.geojson, venueId);
-  addUnit(map, unitFeatureCollection.geojson, venueId);
-  addOpening(map, openingFeatureCollection.geojson, venueId);
+  addVenueMarker(map, venueFeatureCollection);
+  addLevel(map, levelFeatureCollection);
+  addUnit(map, unitFeatureCollection);
+  addOpening(map, openingFeatureCollection);
   if (!document.getElementById("level-selector-container")) {
     displayLevelSelector(
       map,
@@ -84,7 +81,15 @@ const displayLevelSelector = (
   );
 };
 
-const addVenueMarker = (map, venueCoordinates, venueName, venueId) => {
+const addVenueMarker = (map, venueFeatureCollection) => {
+  const venueId = venueFeatureCollection.venueId;
+  const venueCoordinates =
+    venueFeatureCollection.geojson.features[0].properties.display_point
+      .coordinates;
+  const venueName = Object.values(
+    venueFeatureCollection.geojson.features[0].properties.name
+  )[0];
+
   if (map.getSource(`venueFeature_${venueId}`)) {
     return;
   }
@@ -99,37 +104,55 @@ const addVenueMarker = (map, venueCoordinates, venueName, venueId) => {
       },
       properties: {
         name: venueName,
+        venueId: venueId,
       },
     },
   });
 
-  map.addLayer({
-    id: `venueFeature_${venueId}`,
-    type: "symbol",
-    source: `venueFeature_${venueId}`,
-    layout: {
-      "icon-image": "marker_icon",
-      "icon-size": 0.5,
-      "icon-offset": [0, -40],
-      "text-font": ["Fira GO Regular"],
-      "text-field": venueName,
-      "text-size": 14,
-      "text-anchor": "bottom",
-      "text-offset": [0, -3.5],
-      "icon-allow-overlap": true,
-      "text-allow-overlap": true,
+  map.addLayer(
+    {
+      id: `venueFeature_${venueId}`,
+      type: "symbol",
+      source: `venueFeature_${venueId}`,
+      layout: {
+        "icon-image": "default_marker_icon",
+        "icon-size": 0.5,
+        "icon-offset": [0, -40],
+        "text-font": ["Fira GO Regular"],
+        "text-field": venueName,
+        "text-size": 14,
+        "text-anchor": "bottom",
+        "text-offset": [0, -3.5],
+        "icon-allow-overlap": true,
+        "text-allow-overlap": true,
+      },
     },
-  });
+    "route"
+  );
 };
 
-const addLevel = (map, levelFeatureCollection, venueId) => {
+const addLevel = (map, levelFeatureCollection) => {
+  const venueId = levelFeatureCollection.venueId;
+
   if (map.getSource(`levelFeature_${venueId}`)) {
     return;
   }
 
   map.addSource(`levelFeature_${venueId}`, {
     type: "geojson",
-    data: levelFeatureCollection,
+    data: {
+      ...levelFeatureCollection.geojson,
+      features: levelFeatureCollection.geojson.features.map((feature) => {
+        return {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            id: feature.id,
+            venueId: venueId,
+          },
+        };
+      }),
+    },
   });
 
   map.addLayer(
@@ -157,14 +180,28 @@ const addLevel = (map, levelFeatureCollection, venueId) => {
   );
 };
 
-const addUnit = (map, unitFeatureCollection, venueId) => {
+const addUnit = (map, unitFeatureCollection) => {
+  const venueId = unitFeatureCollection.venueId;
+
   if (map.getSource(`unitFeature_${venueId}`)) {
     return;
   }
 
   map.addSource(`unitFeature_${venueId}`, {
     type: "geojson",
-    data: unitFeatureCollection,
+    data: {
+      ...unitFeatureCollection.geojson,
+      features: unitFeatureCollection.geojson.features.map((feature) => {
+        return {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            id: feature.id,
+            venueId: venueId,
+          },
+        };
+      }),
+    },
   });
 
   map.addLayer(
@@ -212,14 +249,16 @@ const addUnit = (map, unitFeatureCollection, venueId) => {
   );
 };
 
-const addOpening = (map, openingFeatureCollection, venueId) => {
+const addOpening = (map, openingFeatureCollection) => {
+  const venueId = openingFeatureCollection.venueId;
+
   if (map.getSource(`openingFeature_${venueId}`)) {
     return;
   }
 
   map.addSource(`openingFeature_${venueId}`, {
     type: "geojson",
-    data: openingFeatureCollection,
+    data: openingFeatureCollection.geojson,
   });
 
   map.addLayer(
@@ -229,7 +268,7 @@ const addOpening = (map, openingFeatureCollection, venueId) => {
       source: `openingFeature_${venueId}`,
       paint: {
         "line-color": "#F3F2E9",
-        "line-width": 2,
+        "line-width": 5,
       },
     },
     `unitFeature_Symbol_${venueId}`
