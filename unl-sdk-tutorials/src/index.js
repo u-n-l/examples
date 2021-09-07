@@ -20,6 +20,7 @@ import {
   resetSelectedLocation,
 } from "./utils/renderCell";
 import { renderRoute } from "./utils/renderRoute";
+import { renderRouteDestinationMarker } from "./utils/renderRouteDestinationMarker";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
@@ -51,7 +52,7 @@ const app = () => {
   });
 
   map.on("click", (event) => {
-    updateCell(map, event.lngLat);
+    updateCell(map, event.lngLat, event);
   });
 
   document.getElementById("action-sheet").innerHTML = ActionSheet();

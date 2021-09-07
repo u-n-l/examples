@@ -5,9 +5,9 @@ import UnlCore from "unl-core";
 
 export const createNewPoi = async (map) => {
   const projectId = "YOUR-PROJECT-ID";
-  const cellCorner = map.getSource("unlCell")._data.geometry.coordinates;
+  const cellCoordinates = map.getSource("unlCell")._data.geometry.coordinates;
 
-  if (!cellCorner.length) {
+  if (!cellCoordinates.length) {
     alert("Select the POI location on the map!");
   } else {
     const cellCorner =

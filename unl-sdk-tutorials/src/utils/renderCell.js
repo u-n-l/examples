@@ -33,8 +33,13 @@ export const renderCell = (map) => {
   });
 };
 
-export const updateCell = (map, coordinates) => {
+export const updateCell = (map, coordinates, event) => {
   const bounds = getGeohashBoundsForCoordinates(coordinates, 9);
+  let features = [];
+
+  if (event) {
+    features = map.queryRenderedFeatures(event.point);
+  }
 
   map.getSource("unlCell").setData({
     type: "Feature",
@@ -42,6 +47,7 @@ export const updateCell = (map, coordinates) => {
       type: "Polygon",
       coordinates: unlBoundsToGeojsonPositionArray(bounds),
     },
+    properties: features[0] ? features[0].properties : {},
   });
 
   map.flyTo({ center: coordinates, zoom: 18 });
