@@ -1,7 +1,7 @@
 import UnlCore from "unl-core";
 import { fetchRoute } from "../unlApi";
 import { updateDestinationMarkerPosition } from "../utils/renderRouteDestinationMarker";
-import { geohashToUnlCoordinates } from "../utils/unlCoreHelpers";
+import { geohashToCoordinates } from "../utils/unlCoreHelpers";
 
 const buildDestinationWaypoint = (destinationMapSource) => {
   const destinationSourceProperties = destinationMapSource._data.properties;
@@ -86,7 +86,7 @@ export const previewRoute = async (map) => {
       destinationCellCorner[0],
       9 // geohash precision
     );
-    const destinationCoordinates = geohashToUnlCoordinates(destinationGeohash);
+    const destinationCoordinates = geohashToCoordinates(destinationGeohash);
 
     updateDestinationMarkerPosition(map, destinationCoordinates);
   }

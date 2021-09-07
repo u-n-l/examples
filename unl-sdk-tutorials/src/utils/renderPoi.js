@@ -1,5 +1,5 @@
 import { updateCell } from "./renderCell";
-import { geohashToUnlCoordinates } from "./unlCoreHelpers";
+import { geohashToCoordinates } from "./unlCoreHelpers";
 
 export const renderPoi = (map, poi) => {
   const poiId = poi.recordId;
@@ -24,7 +24,7 @@ const addPoiMarker = (map, poiGeohash, poiName, poiId) => {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: geohashToUnlCoordinates(poiGeohash),
+        coordinates: geohashToCoordinates(poiGeohash),
       },
       properties: {
         name: poiName,
@@ -72,7 +72,7 @@ export const showSubmitButton = () => {
 };
 
 export const toggleSearchContent = () => {
-  var searchContent = document.getElementById("search-content");
+  var searchContent = document.getElementById("search-poi-input");
 
   if (searchContent.style.display !== "block") {
     searchContent.style.display = "block";

@@ -1,6 +1,6 @@
 import { createPoi } from "../unlApi";
 import { renderPoi } from "../utils/renderPoi";
-import { geohashToUnlCoordinates } from "../utils/unlCoreHelpers";
+import { geohashToCoordinates } from "../utils/unlCoreHelpers";
 import UnlCore from "unl-core";
 
 export const createNewPoi = async (map) => {
@@ -11,14 +11,14 @@ export const createNewPoi = async (map) => {
     alert("Select the POI location on the map!");
   } else {
     const cellCorner =
-      map.getSource("unlCell")._data.geometry.coordinates[0][0];
+      map.getSource("unlCell")._data.geometry.coordinates[0][1];
 
     const poiGeohash = UnlCore.encode(
       cellCorner[1],
       cellCorner[0],
       9 //geohash precision
     );
-    const poiCoordinates = geohashToUnlCoordinates(poiGeohash);
+    const poiCoordinates = geohashToCoordinates(poiGeohash);
 
     const poiGeojson = {
       type: "Feature",

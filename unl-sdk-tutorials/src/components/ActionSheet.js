@@ -12,10 +12,8 @@ const ActionSheet = () => {
         <input id="submit" type="submit" class="input" value="Create POI">
       </form>
       <button id="search-poi-button" class="action-sheet-button">Search for POI</button>
-      <form id="search-content" class="hidden-content">
-        <input id="search-poi-input" class="action-sheet-button"></input>
-        <input id="search" class="action-sheet-button" type="submit" value="Search POI">
-      </form>
+      <input id="search-poi-input" class="input" placeholder="Search here"></input>
+      <ul id="search-result-list" class="search-result-list"></ul>
     </div>
   `;
 

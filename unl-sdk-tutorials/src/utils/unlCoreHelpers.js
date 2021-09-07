@@ -1,6 +1,6 @@
 import UnlCore from "unl-core";
 
-export function geohashPointToUnlCoordinates(geohashPoint) {
+export function geohashPointToCoordinates(geohashPoint) {
   return [geohashPoint.lon, geohashPoint.lat];
 }
 
@@ -8,16 +8,20 @@ export const decodeGeohash = (geohash) => {
   return UnlCore.decode(geohash);
 };
 
-export const geohashToUnlCoordinates = (geohash) => {
-  return geohashPointToUnlCoordinates(decodeGeohash(geohash));
+export const geohashToCoordinates = (geohash) => {
+  return geohashPointToCoordinates(decodeGeohash(geohash));
 };
 
-export const getGeohashBounds = (geohash) => {
-  return unlCoreBoundsToUnlBounds(UnlCore.bounds(geohash));
-};
+export const getGeohashBoundsForCoordinates = (unlCoordinates, gridType) => {
+  const geohash = UnlCore.encode(
+    unlCoordinates.lat,
+    unlCoordinates.lng,
+    gridType
+  );
 
-export const unlCoreBoundsToUnlBounds = (unlCoreBounds) => {
-  return {
+  const unlCoreBounds = UnlCore.bounds(geohash);
+
+  const bounds = {
     northEast: {
       lat: unlCoreBounds.n,
       lng: unlCoreBounds.e,
@@ -27,18 +31,11 @@ export const unlCoreBoundsToUnlBounds = (unlCoreBounds) => {
       lng: unlCoreBounds.w,
     },
   };
+
+  return bounds;
 };
 
-export const getGeohashBoundsForCoordinates = (unlCoordinates, gridType) => {
-  const geohash = UnlCore.encode(
-    unlCoordinates.lat,
-    unlCoordinates.lng,
-    gridType
-  );
-  return getGeohashBounds(geohash);
-};
-
-export const unlBoundsToGeojsonPositionArray = (bounds) => {
+export const boundsToGeojsonPositionArray = (bounds) => {
   const geojsonPositionArray = [];
   const { southWest, northEast } = bounds;
 

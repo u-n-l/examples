@@ -90,10 +90,11 @@ const app = () => {
     toggleSearchContent();
   });
 
-  document.getElementById("search").addEventListener("click", (event) => {
-    event.preventDefault();
-    searchPoi(map);
-  });
+  document
+    .getElementById("search-poi-input")
+    .addEventListener("keypress", (event) => {
+      searchPoi(map);
+    });
 };
 
 app();

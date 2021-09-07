@@ -1,6 +1,6 @@
 import {
   getGeohashBoundsForCoordinates,
-  unlBoundsToGeojsonPositionArray,
+  boundsToGeojsonPositionArray,
 } from "./unlCoreHelpers";
 
 export const renderCell = (map) => {
@@ -45,7 +45,7 @@ export const updateCell = (map, coordinates, event) => {
     type: "Feature",
     geometry: {
       type: "Polygon",
-      coordinates: unlBoundsToGeojsonPositionArray(bounds),
+      coordinates: boundsToGeojsonPositionArray(bounds),
     },
     properties: features[0] ? features[0].properties : {},
   });
