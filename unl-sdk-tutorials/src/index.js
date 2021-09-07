@@ -12,6 +12,9 @@ import { renderGridLines } from "./utils/renderGridLines";
 import { renderRoute } from "./utils/renderRoute";
 import UnlCore from "unl-core";
 import { previewRoute } from "./tutorials/previewRoute";
+import { importPoiFromStudio } from "./tutorials/importPoiFromStudio";
+import { createNewPoi } from "./tutorials/createNewPoi";
+import { showInputField, showSubmitButton } from "./utils/renderPoi";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
@@ -80,6 +83,19 @@ const app = () => {
     .addEventListener("click", () => {
       uploadImdfVenue(map);
     });
+  document.getElementById("import-poi-button").addEventListener("click", () => {
+    importPoiFromStudio(map);
+  });
+
+  document.getElementById("create-poi-button").addEventListener("click", () => {
+    showInputField();
+    showSubmitButton();
+  });
+
+  document.getElementById("submit").addEventListener("click", (event) => {
+    event.preventDefault();
+    createNewPoi(map);
+  });
   document
     .getElementById("preview-route-button")
     .addEventListener("click", () => {

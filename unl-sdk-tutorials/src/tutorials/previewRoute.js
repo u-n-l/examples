@@ -32,7 +32,7 @@ const buildDestinationWaypoint = (destinationMapSource) => {
 };
 
 export const previewRoute = async (map) => {
-  const projectId = "c6d19215-e75c-4ceb-a545-31b4442958b5";
+  const projectId = "YOUR-PROJECT-ID";
   const destinationMapSource = map.getSource("routeDestinationMarker");
   const destinationCoordinates =
     destinationMapSource._data.geometry.coordinates;
