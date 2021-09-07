@@ -40,14 +40,13 @@ const app = () => {
   map.on("style.load", () => {
     renderGridLines(map);
     renderCell(map);
-    //renderRouteSourceMarker(map);
     renderRouteDestinationMarker(map);
     renderRouteSourceMarker(map);
     renderRoute(map);
     map.setLayoutProperty("routeSourceMarker", "visibility", "none");
   });
 
-  map.on("move", () => {
+  map.on("moveend", () => {
     updateGridLines(map);
   });
 

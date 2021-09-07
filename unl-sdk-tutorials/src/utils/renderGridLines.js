@@ -31,7 +31,7 @@ export const updateGridLines = (map) => {
     w: bounds._sw.lng,
   };
 
-  if (zoom > 18) {
+  if (zoom >= 18) {
     const gridLines = UnlCore.gridLines(unlBounds);
 
     map.getSource("gridLines").setData({
