@@ -99,27 +99,31 @@ const addVenueMarker = (map, venueCoordinates, venueName, venueId) => {
       },
       properties: {
         name: venueName,
+        venueId: venueId,
       },
     },
   });
 
-  map.addLayer({
-    id: `venueFeature_${venueId}`,
-    type: "symbol",
-    source: `venueFeature_${venueId}`,
-    layout: {
-      "icon-image": "marker_icon",
-      "icon-size": 0.5,
-      "icon-offset": [0, -40],
-      "text-font": ["Fira GO Regular"],
-      "text-field": venueName,
-      "text-size": 14,
-      "text-anchor": "bottom",
-      "text-offset": [0, -3.5],
-      "icon-allow-overlap": true,
-      "text-allow-overlap": true,
+  map.addLayer(
+    {
+      id: `venueFeature_${venueId}`,
+      type: "symbol",
+      source: `venueFeature_${venueId}`,
+      layout: {
+        "icon-image": "venue_marker_icon",
+        "icon-size": 0.5,
+        "icon-offset": [0, -40],
+        "text-font": ["Fira GO Regular"],
+        "text-field": venueName,
+        "text-size": 14,
+        "text-anchor": "bottom",
+        "text-offset": [0, -3.5],
+        "icon-allow-overlap": true,
+        "text-allow-overlap": true,
+      },
     },
-  });
+    "route"
+  );
 };
 
 const addLevel = (map, levelFeatureCollection, venueId) => {
@@ -129,7 +133,19 @@ const addLevel = (map, levelFeatureCollection, venueId) => {
 
   map.addSource(`levelFeature_${venueId}`, {
     type: "geojson",
-    data: levelFeatureCollection,
+    data: {
+      ...levelFeatureCollection,
+      features: levelFeatureCollection.features.map((feature) => {
+        return {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            id: feature.id,
+            venueId: venueId,
+          },
+        };
+      }),
+    },
   });
 
   map.addLayer(
@@ -164,7 +180,19 @@ const addUnit = (map, unitFeatureCollection, venueId) => {
 
   map.addSource(`unitFeature_${venueId}`, {
     type: "geojson",
-    data: unitFeatureCollection,
+    data: {
+      ...unitFeatureCollection,
+      features: unitFeatureCollection.features.map((feature) => {
+        return {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            id: feature.id,
+            venueId: venueId,
+          },
+        };
+      }),
+    },
   });
 
   map.addLayer(
@@ -229,7 +257,7 @@ const addOpening = (map, openingFeatureCollection, venueId) => {
       source: `openingFeature_${venueId}`,
       paint: {
         "line-color": "#F3F2E9",
-        "line-width": 2,
+        "line-width": 5,
       },
     },
     `unitFeature_Symbol_${venueId}`

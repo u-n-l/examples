@@ -9,17 +9,18 @@ import {
 } from "./utils/renderRouteDestinationMarker";
 import { renderRouteSourceMarker } from "./utils/renderRouteSourceMarker";
 import { renderGridLines } from "./utils/renderGridLines";
+import { renderRoute } from "./utils/renderRoute";
 import UnlCore from "unl-core";
+import { previewRoute } from "./tutorials/previewRoute";
 import { importPoiFromStudio } from "./tutorials/importPoiFromStudio";
 import { createNewPoi } from "./tutorials/createNewPoi";
-import { previewRoute } from "./tutorials/previewRoute";
 import { showInputField, showSubmitButton } from "./utils/renderPoi";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
 const app = () => {
-  const MAPBOX_TOKEN = "YOUR_MAPBOX_TOKEN"; // https://docs.mapbox.com/help/glossary/access-token/
-  const HERE_MAPS_API_KEY = "YOUR_HERE_MAPS_API_KEY"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
+  const MAPBOX_TOKEN = "YOUR-MAPBOX-TOKEN"; // https://docs.mapbox.com/help/glossary/access-token/
+  const HERE_MAPS_API_KEY = "YOUR-HERE-MAPS-API-KEY"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
 
   mapboxgl.accessToken = MAPBOX_TOKEN;
   const map = new mapboxgl.Map({
@@ -35,6 +36,8 @@ const app = () => {
     renderGridLines(map);
     renderRouteDestinationMarker(map);
     renderRouteSourceMarker(map);
+    renderRoute(map);
+    map.setLayoutProperty("routeSourceMarker", "visibility", "none");
   });
 
   map.on("move", () => {
@@ -70,7 +73,6 @@ const app = () => {
   });
 
   document.getElementById("action-sheet").innerHTML = ActionSheet();
-
   document
     .getElementById("import-venue-button")
     .addEventListener("click", () => {
@@ -94,7 +96,6 @@ const app = () => {
     event.preventDefault();
     createNewPoi(map);
   });
-
   document
     .getElementById("preview-route-button")
     .addEventListener("click", () => {
