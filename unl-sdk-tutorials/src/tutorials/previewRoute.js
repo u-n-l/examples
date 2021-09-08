@@ -1,10 +1,19 @@
 import UnlCore from "unl-core";
 import { fetchRoute } from "../unlApi";
+import { updateDestinationMarkerPosition } from "../utils/renderRouteDestinationMarker";
+import { geohashToCoordinates } from "../utils/unlCoreHelpers";
 
 const buildDestinationWaypoint = (destinationMapSource) => {
-  const destinationCoordinates =
-    destinationMapSource._data.geometry.coordinates;
   const destinationSourceProperties = destinationMapSource._data.properties;
+
+  const destinationCellCorner =
+    destinationMapSource._data.geometry.coordinates[0][0];
+
+  const destinationGeohash = UnlCore.encode(
+    destinationCellCorner[1],
+    destinationCellCorner[0],
+    9 // geohash precision
+  );
 
   if (destinationSourceProperties.venueId) {
     // indoor waypoint
@@ -13,31 +22,26 @@ const buildDestinationWaypoint = (destinationMapSource) => {
       venueId: destinationSourceProperties.venueId,
       unitId: destinationSourceProperties.id,
       levelId: destinationSourceProperties.level_id,
-      geohash: UnlCore.encode(
-        destinationCoordinates[1],
-        destinationCoordinates[0],
-        9
-      ),
+      geohash: destinationGeohash,
     };
 
     return indoorWaypoint;
   } else {
     // outdoor waypoint
     return {
-      type: "point",
-      coordinates: destinationCoordinates,
+      type: "geohash",
+      geohash: destinationGeohash,
     };
   }
 };
 
 export const previewRoute = async (map) => {
   const projectId = "YOUR-PROJECT-ID";
-  const destinationMapSource = map.getSource("routeDestinationMarker");
-  const destinationCoordinates =
-    destinationMapSource._data.geometry.coordinates;
+  const destinationMapSource = map.getSource("unlCell");
+  const destinationCell = destinationMapSource._data.geometry.coordinates;
 
-  if (!destinationCoordinates.length) {
-    alert("select the destination marker!");
+  if (!destinationCell.length) {
+    alert("Select the destination cell!");
   } else {
     const sourceCoordinates =
       map.getSource("routeSourceMarker")._data.geometry.coordinates;
@@ -75,5 +79,15 @@ export const previewRoute = async (map) => {
       },
     });
     map.setLayoutProperty("routeSourceMarker", "visibility", "visible");
+
+    const destinationCellCorner = destinationCell[0][1];
+    const destinationGeohash = UnlCore.encode(
+      destinationCellCorner[1],
+      destinationCellCorner[0],
+      9 // geohash precision
+    );
+    const destinationCoordinates = geohashToCoordinates(destinationGeohash);
+
+    updateDestinationMarkerPosition(map, destinationCoordinates);
   }
 };

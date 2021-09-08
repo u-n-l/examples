@@ -3,18 +3,24 @@ import ActionSheet from "./components/ActionSheet";
 import { importVenueFromStudio } from "./tutorials/importVenueFromStudio";
 import { uploadImdfVenue } from "./tutorials/uploadImdfVenue";
 import { loadMapImages } from "./utils/loadMapImages";
-import {
-  renderRouteDestinationMarker,
-  updateDestinationMarkerPosition,
-} from "./utils/renderRouteDestinationMarker";
 import { renderRouteSourceMarker } from "./utils/renderRouteSourceMarker";
-import { renderGridLines } from "./utils/renderGridLines";
-import { renderRoute } from "./utils/renderRoute";
-import UnlCore from "unl-core";
-import { previewRoute } from "./tutorials/previewRoute";
+import { renderGridLines, updateGridLines } from "./utils/renderGridLines";
 import { importPoiFromStudio } from "./tutorials/importPoiFromStudio";
 import { createNewPoi } from "./tutorials/createNewPoi";
-import { showInputField, showSubmitButton } from "./utils/renderPoi";
+import { previewRoute } from "./tutorials/previewRoute";
+import {
+  showInputField,
+  showSubmitButton,
+  toggleSearchContent,
+} from "./utils/renderPoi";
+import { searchPoi } from "./tutorials/searchPoi";
+import {
+  renderCell,
+  updateCell,
+  resetSelectedLocation,
+} from "./utils/renderCell";
+import { renderRoute } from "./utils/renderRoute";
+import { renderRouteDestinationMarker } from "./utils/renderRouteDestinationMarker";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
@@ -34,42 +40,19 @@ const app = () => {
 
   map.on("style.load", () => {
     renderGridLines(map);
+    renderCell(map);
     renderRouteDestinationMarker(map);
     renderRouteSourceMarker(map);
     renderRoute(map);
     map.setLayoutProperty("routeSourceMarker", "visibility", "none");
   });
 
-  map.on("move", () => {
-    const bounds = map.getBounds();
-    const zoom = map.getZoom();
-
-    const unlBounds = {
-      n: bounds._ne.lat,
-      e: bounds._ne.lng,
-      s: bounds._sw.lat,
-      w: bounds._sw.lng,
-    };
-
-    if (zoom > 18) {
-      const gridLines = UnlCore.gridLines(unlBounds);
-
-      map.getSource("gridLines").setData({
-        type: "FeatureCollection",
-        features: gridLines.map((line) => ({
-          type: "Feature",
-          properties: {},
-          geometry: {
-            type: "LineString",
-            coordinates: line,
-          },
-        })),
-      });
-    }
+  map.on("moveend", () => {
+    updateGridLines(map);
   });
 
   map.on("click", (event) => {
-    updateDestinationMarkerPosition(map, event);
+    updateCell(map, event.lngLat, event);
   });
 
   document.getElementById("action-sheet").innerHTML = ActionSheet();
@@ -95,11 +78,22 @@ const app = () => {
   document.getElementById("submit").addEventListener("click", (event) => {
     event.preventDefault();
     createNewPoi(map);
+    resetSelectedLocation(map);
   });
   document
     .getElementById("preview-route-button")
     .addEventListener("click", () => {
       previewRoute(map);
+    });
+
+  document.getElementById("search-poi-button").addEventListener("click", () => {
+    toggleSearchContent();
+  });
+
+  document
+    .getElementById("search-poi-input")
+    .addEventListener("keypress", (event) => {
+      searchPoi(map);
     });
 };
 

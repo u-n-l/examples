@@ -26,3 +26,7 @@ export const getPoi = (projectId, poiId) => {
 export const createPoi = (projectId, poiGeojson) => {
   return unlApi.recordsApi.create(projectId, poiGeojson);
 };
+
+export const fetchSearchResults = (projectId, searchParams) => {
+  return unlApi.searchApi.search(projectId, searchParams);
+};

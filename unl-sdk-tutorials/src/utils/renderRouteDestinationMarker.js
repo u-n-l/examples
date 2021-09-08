@@ -23,17 +23,12 @@ export const renderRouteDestinationMarker = (map) => {
   });
 };
 
-export const updateDestinationMarkerPosition = (map, event) => {
-  var coordinates = event.lngLat;
-
-  const features = map.queryRenderedFeatures(event.point);
-
+export const updateDestinationMarkerPosition = (map, coordinates) => {
   map.getSource("routeDestinationMarker").setData({
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [coordinates.lng, coordinates.lat],
+      coordinates: coordinates,
     },
-    properties: features[0] ? features[0].properties : {},
   });
 };

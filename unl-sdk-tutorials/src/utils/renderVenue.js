@@ -127,7 +127,7 @@ const addVenueMarker = (map, venueFeatureCollection) => {
         "text-allow-overlap": true,
       },
     },
-    "route"
+    "gridLines"
   );
 };
 
