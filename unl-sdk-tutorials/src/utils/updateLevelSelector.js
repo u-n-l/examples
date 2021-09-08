@@ -9,20 +9,24 @@ export const updateLevelSelector = (map) => {
   if (venueFeature) {
     const properties = venueFeature.properties;
 
-    displayLevelSelector(
-      map,
-      JSON.parse(properties.levelsShortNames),
-      JSON.parse(properties.levelsOrdinals),
-      properties.venueGroundLevel,
-      properties.venueId
-    );
+    if (
+      !document.getElementById(`level-selector-container-${properties.venueId}`)
+    ) {
+      displayLevelSelector(
+        map,
+        JSON.parse(properties.levelsShortNames),
+        JSON.parse(properties.levelsOrdinals),
+        properties.venueGroundLevel,
+        properties.venueId
+      );
 
-    handleLevelSelected(
-      map,
-      properties.venueGroundLevel,
-      properties.groundLevelId,
-      properties.venueId
-    );
+      handleLevelSelected(
+        map,
+        properties.venueGroundLevel,
+        properties.groundLevelId,
+        properties.venueId
+      );
+    }
   }
 };
 
@@ -36,7 +40,7 @@ const displayLevelSelector = (
   document.getElementById("level-selector").innerHTML = "";
 
   document.getElementById("level-selector").appendChild(
-    LevelSelector(levelsShortNames, venueGroundLevel, (index) => {
+    LevelSelector(venueId, levelsShortNames, venueGroundLevel, (index) => {
       const selectedVenueOrdinal = index - venueGroundLevel;
 
       const selectedLevelId = levelsOrdinals.find(

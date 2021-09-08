@@ -1,6 +1,6 @@
-const LevelSelector = (levelNames, venueGroundLevel, onLevelClick) => {
+const LevelSelector = (venueId, levelNames, venueGroundLevel, onLevelClick) => {
   const root = document.createElement("div");
-  root.id = "level-selector-container";
+  root.id = `level-selector-container-${venueId}`;
 
   levelNames.map((levelName, index) => {
     const levelFab = document.createElement("div");
