@@ -1,6 +1,7 @@
+import config from "../config";
 import UnlApi from "unl-js-api/dist";
 
-const UNL_API_KEY = "YOUR-UNL-API-KEY"; //https://developer.unl.global/docs/unlSdk/projects-apiKeys
+const UNL_API_KEY = config.UNL_API_KEY;
 const unlApi = new UnlApi({ apiKey: UNL_API_KEY });
 
 export const uploadImdfArchive = (projectId, imdfArchive) => {

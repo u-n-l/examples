@@ -1,8 +1,9 @@
-import { uploadImdfArchive, getImdfFeatures } from "../unlApi";
+import config from "../../config";
 import { renderVenue } from "../utils/renderVenue";
+import { uploadImdfArchive, getImdfFeatures } from "../unlApi";
 
 export const uploadImdfVenue = async (map) => {
-  const projectId = "YOUR-PROJECT-ID";
+  const projectId = config.PROJECT_ID;
 
   const input = document.getElementById("venue-uploader");
 

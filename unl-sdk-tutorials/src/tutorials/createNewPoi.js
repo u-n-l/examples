@@ -1,10 +1,11 @@
+import config from "../../config";
+import UnlCore from "unl-core";
+import { geohashToCoordinates } from "../utils/unlCoreHelpers";
 import { createPoi } from "../unlApi";
 import { renderPoi } from "../utils/renderPoi";
-import { geohashToCoordinates } from "../utils/unlCoreHelpers";
-import UnlCore from "unl-core";
 
 export const createNewPoi = async (map) => {
-  const projectId = "YOUR-PROJECT-ID";
+  const projectId = config.PROJECT_ID;
   const cellCoordinates = map.getSource("unlCell")._data.geometry.coordinates;
 
   if (!cellCoordinates.length) {

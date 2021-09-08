@@ -1,5 +1,3 @@
-import LevelSelector from "../components/LevelSelector";
-
 const getVenueRenderedFeatures = (imdfFeatures) => {
   const venueFeatureCollection = imdfFeatures.find(
     (feature) => feature.type === "venue"
@@ -30,58 +28,23 @@ export const renderVenue = (map, imdfFeatures) => {
     openingFeatureCollection,
   } = getVenueRenderedFeatures(imdfFeatures);
 
-  const venueId = venueFeatureCollection.venueId;
   const venueCoordinates =
     venueFeatureCollection.geojson.features[0].properties.display_point
       .coordinates;
-  const venueGroundLevel = levelFeatureCollection.geojson.features.findIndex(
-    (feature) => feature.properties.ordinal === 0
-  );
-  const groundLevelId =
-    levelFeatureCollection.geojson.features[venueGroundLevel].id;
 
-  addVenueMarker(map, venueFeatureCollection);
+  addVenueMarker(map, venueFeatureCollection, levelFeatureCollection);
   addLevel(map, levelFeatureCollection);
   addUnit(map, unitFeatureCollection);
   addOpening(map, openingFeatureCollection);
-  if (!document.getElementById("level-selector-container")) {
-    displayLevelSelector(
-      map,
-      levelFeatureCollection,
-      venueGroundLevel,
-      venueId
-    );
-
-    handleLevelSelected(map, venueGroundLevel, groundLevelId, venueId);
-  }
 
   map.flyTo({ center: venueCoordinates, zoom: 14 });
 };
 
-const displayLevelSelector = (
+const addVenueMarker = (
   map,
-  levelFeatureCollection,
-  venueGroundLevel,
-  venueId
+  venueFeatureCollection,
+  levelFeatureCollection
 ) => {
-  const levelsShortNames = levelFeatureCollection.geojson.features.map(
-    (level) => Object.values(level.properties.short_name)[0]
-  );
-
-  document.getElementById("level-selector").appendChild(
-    LevelSelector(levelsShortNames, venueGroundLevel, (index) => {
-      const selectedVenueOrdinal = index - venueGroundLevel;
-
-      const selectedLevelId = levelFeatureCollection.geojson.features.find(
-        (feature) => feature.properties.ordinal === selectedVenueOrdinal
-      ).id;
-
-      handleLevelSelected(map, venueGroundLevel, selectedLevelId, venueId);
-    })
-  );
-};
-
-const addVenueMarker = (map, venueFeatureCollection) => {
   const venueId = venueFeatureCollection.venueId;
   const venueCoordinates =
     venueFeatureCollection.geojson.features[0].properties.display_point
@@ -94,6 +57,12 @@ const addVenueMarker = (map, venueFeatureCollection) => {
     return;
   }
 
+  const venueGroundLevel = levelFeatureCollection.geojson.features.findIndex(
+    (feature) => feature.properties.ordinal === 0
+  );
+  const groundLevelId =
+    levelFeatureCollection.geojson.features[venueGroundLevel].id;
+
   map.addSource(`venueFeature_${venueId}`, {
     type: "geojson",
     data: {
@@ -104,7 +73,15 @@ const addVenueMarker = (map, venueFeatureCollection) => {
       },
       properties: {
         name: venueName,
-        venueId: venueId,
+        venueId,
+        venueGroundLevel,
+        groundLevelId,
+        levelsShortNames: levelFeatureCollection.geojson.features.map(
+          (level) => Object.values(level.properties.short_name)[0]
+        ),
+        levelsOrdinals: levelFeatureCollection.geojson.features.map((level) => {
+          return { id: level.id, ordinal: level.properties.ordinal };
+        }),
       },
     },
   });
@@ -273,21 +250,4 @@ const addOpening = (map, openingFeatureCollection) => {
     },
     `unitFeature_Symbol_${venueId}`
   );
-};
-
-const handleLevelSelected = (map, index, selectedLevelId, venueId) => {
-  const unitsFilter = [
-    "all",
-    ["==", ["get", "level_id"], selectedLevelId],
-    ["!=", ["get", "category"], "walkway"],
-  ];
-  const levelsFilter = ["==", "ordinal", index];
-
-  map.setFilter(`levelFeature_Fill_${venueId}`, levelsFilter);
-  map.setFilter(`levelFeature_Line_${venueId}`, levelsFilter);
-
-  map.setFilter(`unitFeature_Fill_${venueId}`, unitsFilter);
-  map.setFilter(`unitFeature_Symbol_${venueId}`, unitsFilter);
-  map.setFilter(`unitFeature_Line_${venueId}`, unitsFilter);
-  map.setFilter(`openingFeature_Line_${venueId}`, unitsFilter);
 };
