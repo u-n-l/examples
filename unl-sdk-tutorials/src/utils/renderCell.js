@@ -1,7 +1,4 @@
-import {
-  getGeohashBoundsForCoordinates,
-  boundsToGeojsonPositionArray,
-} from "./unlCoreHelpers";
+import { coordinatesToGejsonPositionArray } from "./unlCoreHelpers";
 
 export const renderCell = (map) => {
   map.addSource("unlCell", {
@@ -34,7 +31,6 @@ export const renderCell = (map) => {
 };
 
 export const updateCell = (map, coordinates, event) => {
-  const bounds = getGeohashBoundsForCoordinates(coordinates, 9);
   let features = [];
 
   if (event) {
@@ -45,12 +41,15 @@ export const updateCell = (map, coordinates, event) => {
     type: "Feature",
     geometry: {
       type: "Polygon",
-      coordinates: boundsToGeojsonPositionArray(bounds),
+      coordinates: coordinatesToGejsonPositionArray(coordinates, 9),
     },
     properties: features[0] ? features[0].properties : {},
   });
 
-  map.flyTo({ center: coordinates, zoom: 18 });
+  map.flyTo({
+    center: coordinates,
+    zoom: map.getZoom() < 18 ? 18 : map.getZoom(),
+  });
 };
 
 export const resetSelectedLocation = (map) => {

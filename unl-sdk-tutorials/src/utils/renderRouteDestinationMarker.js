@@ -30,6 +30,5 @@ export const updateDestinationMarkerPosition = (map, coordinates) => {
       type: "Point",
       coordinates: coordinates,
     },
-    properties: features[0] ? features[0].properties : {},
   });
 };
