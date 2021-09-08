@@ -1,7 +1,8 @@
 import UnlCore from "unl-core";
-import { fetchRoute } from "../unlApi";
+import config from "../../config";
 import { updateDestinationMarkerPosition } from "../utils/renderRouteDestinationMarker";
 import { geohashToCoordinates } from "../utils/unlCoreHelpers";
+import { fetchRoute } from "../unlApi";
 
 const buildDestinationWaypoint = (destinationMapSource) => {
   const destinationSourceProperties = destinationMapSource._data.properties;
@@ -36,7 +37,7 @@ const buildDestinationWaypoint = (destinationMapSource) => {
 };
 
 export const previewRoute = async (map) => {
-  const projectId = "YOUR-PROJECT-ID";
+  const projectId = config.PROJECT_ID;
   const destinationMapSource = map.getSource("unlCell");
   const destinationCell = destinationMapSource._data.geometry.coordinates;
 

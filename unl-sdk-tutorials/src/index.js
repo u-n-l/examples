@@ -1,4 +1,5 @@
 import "regenerator-runtime/runtime";
+import config from "../config";
 import ActionSheet from "./components/ActionSheet";
 import { importVenueFromStudio } from "./tutorials/importVenueFromStudio";
 import { uploadImdfVenue } from "./tutorials/uploadImdfVenue";
@@ -8,6 +9,7 @@ import { renderGridLines, updateGridLines } from "./utils/renderGridLines";
 import { importPoiFromStudio } from "./tutorials/importPoiFromStudio";
 import { createNewPoi } from "./tutorials/createNewPoi";
 import { previewRoute } from "./tutorials/previewRoute";
+import { updateLevelSelector } from "./utils/updateLevelSelector";
 import {
   showInputField,
   showSubmitButton,
@@ -25,8 +27,8 @@ import { renderRouteDestinationMarker } from "./utils/renderRouteDestinationMark
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
 const app = () => {
-  const MAPBOX_TOKEN = "YOUR-MAPBOX-TOKEN"; // https://docs.mapbox.com/help/glossary/access-token/
-  const HERE_MAPS_API_KEY = "YOUR-HERE-MAPS-API-KEY"; // https://developer.here.com/documentation/vector-tiles-api/dev_guide/topics/quickstart.html#get-an-api-key
+  const MAPBOX_TOKEN = config.MAPBOX_TOKEN;
+  const HERE_MAPS_API_KEY = config.HERE_MAPS_API_KEY;
 
   mapboxgl.accessToken = MAPBOX_TOKEN;
   const map = new mapboxgl.Map({
@@ -49,6 +51,7 @@ const app = () => {
 
   map.on("moveend", () => {
     updateGridLines(map);
+    updateLevelSelector(map);
   });
 
   map.on("click", (event) => {
