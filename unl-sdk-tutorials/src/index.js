@@ -58,6 +58,13 @@ const app = () => {
     updateCell(map, event.lngLat, event);
   });
 
+  document.getElementById("import-poi-button").addEventListener("click", () => {
+    importPoiFromStudio(map);
+  });
+  document.getElementById("create-poi-button").addEventListener("click", () => {
+    showInputField();
+    showSubmitButton();
+  });
   document.getElementById("action-sheet").innerHTML = ActionSheet();
   document
     .getElementById("import-venue-button")
@@ -69,15 +76,6 @@ const app = () => {
     .addEventListener("click", () => {
       uploadImdfVenue(map);
     });
-  document.getElementById("import-poi-button").addEventListener("click", () => {
-    importPoiFromStudio(map);
-  });
-
-  document.getElementById("create-poi-button").addEventListener("click", () => {
-    showInputField();
-    showSubmitButton();
-  });
-
   document.getElementById("submit").addEventListener("click", (event) => {
     event.preventDefault();
     createNewPoi(map);
