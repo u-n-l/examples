@@ -58,6 +58,7 @@ const app = () => {
     updateCell(map, event.lngLat, event);
   });
 
+  document.getElementById("action-sheet").innerHTML = ActionSheet();
   document.getElementById("import-poi-button").addEventListener("click", () => {
     importPoiFromStudio(map);
   });
@@ -65,7 +66,6 @@ const app = () => {
     showInputField();
     showSubmitButton();
   });
-  document.getElementById("action-sheet").innerHTML = ActionSheet();
   document
     .getElementById("import-venue-button")
     .addEventListener("click", () => {
@@ -86,11 +86,9 @@ const app = () => {
     .addEventListener("click", () => {
       previewRoute(map);
     });
-
   document.getElementById("search-poi-button").addEventListener("click", () => {
     toggleSearchContent();
   });
-
   document
     .getElementById("search-poi-input")
     .addEventListener("keypress", (event) => {
