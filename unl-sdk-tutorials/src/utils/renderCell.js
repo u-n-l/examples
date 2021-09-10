@@ -51,13 +51,3 @@ export const updateCell = (map, coordinates, event) => {
     zoom: map.getZoom() < 18 ? 18 : map.getZoom(),
   });
 };
-
-export const resetSelectedLocation = (map) => {
-  map.getSource("unlCell").setData({
-    type: "Feature",
-    geometry: {
-      type: "Polygon",
-      coordinates: [],
-    },
-  });
-};

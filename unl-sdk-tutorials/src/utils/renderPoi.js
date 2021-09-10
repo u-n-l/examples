@@ -51,7 +51,7 @@ const addPoiMarker = (map, poiGeohash, poiName, poiId) => {
   });
 };
 
-export const showInputField = () => {
+export const toggleInputField = () => {
   var inputField = document.getElementById("poi-name-input");
 
   if (inputField.style.display !== "block") {
@@ -61,7 +61,7 @@ export const showInputField = () => {
   }
 };
 
-export const showSubmitButton = () => {
+export const toggleSubmitButton = () => {
   var createButton = document.getElementById("submit");
 
   if (createButton.style.display !== "block") {
@@ -72,11 +72,19 @@ export const showSubmitButton = () => {
 };
 
 export const toggleSearchContent = () => {
-  var searchContent = document.getElementById("search-poi-input");
+  var searchInput = document.getElementById("search-poi-input");
 
-  if (searchContent.style.display !== "block") {
-    searchContent.style.display = "block";
+  if (searchInput.style.display !== "block") {
+    searchInput.style.display = "block";
   } else {
-    searchContent.style.display = "none";
+    searchInput.style.display = "none";
+  }
+
+  var searchResults = document.getElementById("search-result-list");
+
+  if (searchResults.style.display !== "block") {
+    searchResults.style.display = "block";
+  } else {
+    searchResults.style.display = "none";
   }
 };

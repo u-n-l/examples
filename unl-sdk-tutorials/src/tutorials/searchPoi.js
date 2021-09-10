@@ -1,27 +1,43 @@
 import config from "../../config";
 import { fetchSearchResults } from "../unlApi";
+import { coordinatesToGejsonPositionArray } from "../utils/unlCoreHelpers";
+import { previewRoute } from "./previewRoute";
 
-export const searchPoi = async (map) => {
+export const searchPois = async (map) => {
+  let searchResultList = document.getElementById("search-result-list");
+  searchResultList.innerHTML = "";
+
   const projectId = config.PROJECT_ID;
 
   const searchParams = {
     q: document.getElementById("search-poi-input").value,
-    lat: 48.7167870251449,
-    lon: 2.3657332578918,
+    lat: 13.406131,
+    lon: 52.520936,
   };
 
-  //const poi = await fetchSearchResults(projectId, searchParams);
-  const pois = ["anda", "poi", "list"];
+  const pois = await fetchSearchResults(projectId, searchParams);
 
-  let searchResultList = document.getElementById("search-result-list");
-
-  pois.forEach((item) => {
+  pois.features.forEach((item) => {
     let li = document.createElement("li");
-    li.innerText = item;
+    li.innerText = item.properties.name;
     li.classList.add("search-result");
     li.addEventListener("click", () => {
-      console.log(item);
-      // add preview route
+      map.getSource("unlCell").setData({
+        type: "Feature",
+        geometry: {
+          type: "Polygon",
+          coordinates: coordinatesToGejsonPositionArray(
+            {
+              lng: item.geometry.coordinates[0],
+              lat: item.geometry.coordinates[1],
+            },
+            9
+          ),
+        },
+        properties: {},
+      });
+
+      previewRoute(map);
     });
     searchResultList.appendChild(li);
   });
