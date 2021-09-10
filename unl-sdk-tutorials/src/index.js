@@ -11,16 +11,12 @@ import { createNewPoi } from "./tutorials/createNewPoi";
 import { previewRoute } from "./tutorials/previewRoute";
 import { updateLevelSelector } from "./utils/updateLevelSelector";
 import {
-  showInputField,
-  showSubmitButton,
+  toggleInputField,
+  toggleSubmitButton,
   toggleSearchContent,
 } from "./utils/renderPoi";
-import { searchPoi } from "./tutorials/searchPoi";
-import {
-  renderCell,
-  updateCell,
-  resetSelectedLocation,
-} from "./utils/renderCell";
+import { searchPois } from "./tutorials/searchPoi";
+import { renderCell, updateCell } from "./utils/renderCell";
 import { renderRoute } from "./utils/renderRoute";
 import { renderRouteDestinationMarker } from "./utils/renderRouteDestinationMarker";
 
@@ -63,8 +59,8 @@ const app = () => {
     importPoiFromStudio(map);
   });
   document.getElementById("create-poi-button").addEventListener("click", () => {
-    showInputField();
-    showSubmitButton();
+    toggleInputField();
+    toggleSubmitButton();
   });
   document
     .getElementById("import-venue-button")
@@ -79,7 +75,6 @@ const app = () => {
   document.getElementById("submit").addEventListener("click", (event) => {
     event.preventDefault();
     createNewPoi(map);
-    resetSelectedLocation(map);
   });
   document
     .getElementById("preview-route-button")
@@ -91,8 +86,8 @@ const app = () => {
   });
   document
     .getElementById("search-poi-input")
-    .addEventListener("keypress", (event) => {
-      searchPoi(map);
+    .addEventListener("keypress", () => {
+      searchPois(map);
     });
 };
 

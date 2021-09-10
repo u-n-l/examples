@@ -63,12 +63,12 @@ body {
   margin-bottom: 12px;
 }
 .search-result-list {
+  display: none;
   list-style-type: none;
   padding: 0;
   margin: 0;
   height: 200px;
-  overflow: hidden;
-  overflow-y: scroll;
+  overflow: auto;
 }
 .search-result {
   border: 1px solid #ddd;

@@ -11,8 +11,8 @@ const ActionSheet = () => {
         <button id="import-venue-button" class="action-sheet-button">Import IMDF venue from Studio</button>
         <button id="upload-venue-button" class="action-sheet-button">Upload IMDF venue</button>
         <button id="preview-route-button" class="action-sheet-button">Preview route</button>
-        <button id="search-poi-button" class="action-sheet-button">Search for POI</button>
-        <input id="search-poi-input" class="input" placeholder="Search here"></input>
+        <button id="search-poi-button" class="action-sheet-button">Search for POIs</button>
+        <input id="search-poi-input" class="input" placeholder="Search here">
         <ul id="search-result-list" class="search-result-list"></ul>
     </div>
   `;
