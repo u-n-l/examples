@@ -1,5 +1,5 @@
 import config from "../config";
-import UnlApi from "unl-js-api/dist";
+import UnlApi from "unl-js-api";
 
 const UNL_API_KEY = config.UNL_API_KEY;
 const unlApi = new UnlApi({ apiKey: UNL_API_KEY });
