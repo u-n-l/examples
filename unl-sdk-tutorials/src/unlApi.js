@@ -16,8 +16,8 @@ export const getImdfFeatures = (projectId, venueId, includedFeatureTypes) => {
   );
 };
 
-export const fetchRoute = (projectId, routeRequest) => {
-  return unlApi.routingApi.route(projectId, routeRequest);
+export const fetchRoute = (routeRequest) => {
+  return unlApi.routingApi.route(routeRequest);
 };
 
 export const getPoi = (projectId, poiId) => {
