@@ -24,7 +24,7 @@
     "mapbox-gl": "^2.4.1",
     "regenerator-runtime": "^0.13.9",
     "unl-core": "^3.0.0-alpha.2",
-    "unl-js-api": "^0.1.8",
+    "unl-js-api": "^0.1.9",
     "url-loader": "^4.1.1"
   }
 }
