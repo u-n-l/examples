@@ -1,0 +1,13 @@
+sources:
+  omv:
+    type: "MVT"
+    url: "https://tiles.unl.global/v1/vector/1/{z}/{x}/{y}"
+
+layers:
+  water:
+    data:
+      source: "omv"
+      layer: "fill"
+    draw:
+      polygons:
+        color: "#436981"
