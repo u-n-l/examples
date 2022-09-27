@@ -1,7 +1,6 @@
 import * as L from "leaflet";
 import "leaflet-wms-header";
 import "leaflet.vectorgrid";
-import { esriStyle } from "./vectorstyle.js";
 import { unlStyle } from "./unlStyle";
 const unlTangramStyle = require("./unlTangramStyle.yaml");
 
