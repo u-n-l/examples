@@ -1,7 +1,9 @@
 import * as L from "leaflet";
+import config from "../config";
+import { getUnlStyle } from "./unlStyle";
 
 const tangram = Tangram.leafletLayer({
-  scene: "http://localhost:3000/unlYamlStyle",
+  scene: getUnlStyle(config.API_KEY, config.VPM_ID),
 });
 
 const map = L.map("map", {
