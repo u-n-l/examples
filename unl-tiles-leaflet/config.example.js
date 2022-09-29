@@ -1,0 +1,4 @@
+export default {
+  API_KEY: "PLACE-YOUR-OWN-API-KEY-HERE",
+  VPM_ID: "PLACE-YOUR-OWN-VPM-ID-HERE",
+};
