@@ -14,4 +14,4 @@ export default {
 3. Run `npm i && npm run build` to install the dependencies and build the project
 4. Open the project in `Visual Studio Code` and open the html file using [Live Server Extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
 
-![UNL tiles with leaflet example](https://github.com/u-n-l/examples/tree/main/unl-tiles-leaflet/gifs/leaflet_tiles_example.gif?raw=true)
+![UNL tiles with leaflet example](https://github.com/u-n-l/examples/blob/main/unl-tiles-leaflet/gifs/leaflet_tiles_example.gif?raw=true)
