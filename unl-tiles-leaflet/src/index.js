@@ -1,6 +1,6 @@
 import * as L from "leaflet";
 import config from "../config";
-import { getUnlStyle } from "./unlStyle";
+import { getUnlStyle } from "./unlStyle3";
 
 const tangram = Tangram.leafletLayer({
   scene: getUnlStyle(config.API_KEY, config.VPM_ID),
